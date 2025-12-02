@@ -1,0 +1,174 @@
+
+#contact-section {
+    font-family: "SuisseIntl";
+    height: 92.75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #838383;
+    text-align: center;
+    margin: 0;
+}
+
+#contact-section h1 {
+    font-size: 2.4rem;
+}
+
+#contact-section h4 {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+#h4-text {
+    margin-top: 3%;
+}
+
+#email {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  color: #838383;
+  opacity: 1;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#email.fade-out {
+  opacity: 0;
+}
+
+#email.fade-in {
+  opacity: 1;
+}
+
+#email.copied {
+  color: #CEFF2D;
+  font-weight: 500;
+}
+
+#email:hover {
+  color: #CEFF2D;
+    opacity: 1;
+}
+
+.social-links {
+  margin-top: 20px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-links a,
+.social-links a:visited,
+.social-links a:hover,
+.social-links a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.social-item img {
+    width: 40px; /* or whatever looks right */
+    height: auto;
+}
+
+.arena {
+  gap: 8px;
+}
+
+.instagram .linkedin {
+  gap: 10px;
+}
+
+.divider {
+  width: 1.5px;
+  height: 30px;
+  background: #838383;
+}
+
+#yam-footer-contact {
+    margin-left: 1%;
+    color: #838383;
+    /* bottom: 0; */
+    position: absolute;
+}
+
+.faded-year {
+    opacity: 0.4;
+    font-size: 1rem;
+}
+
+  #h4-text-mobile {
+    display: none;
+  }
+
+/* =========================================================
+   TABLET (max-width: 1024px)
+   ========================================================= */
+@media (max-width: 1024px) {
+
+  #contact-section h1 {
+    font-size: 2rem;
+  }
+
+  #contact-section h4 {
+    font-size: 1rem;
+  }
+
+  #h4-text {
+    display: none;
+  }
+
+  #h4-text-mobile {
+    display: block;
+    margin-top: 5%;
+  }
+
+  .social-links {
+    gap: 16px;
+  }
+
+  .social-item img {
+    height: 18px;
+  }
+
+  #yam-footer-contact {
+    bottom: 0;
+    margin-left: 2%;
+  }
+
+}
+
+/* =========================================================
+   MOBILE (max-width: 600px)
+   ========================================================= */
+@media (max-width: 600px) {
+
+  #contact-section h1 {
+    font-size: 1.65rem;
+  }
+
+  #contact-section h4 {
+    font-size: 0.8rem;
+  }
+
+  #h4-text-mobile {
+    margin-top: 8%;
+  }
+  #yam-footer, #yam-footer-contact {
+  text-decoration: none !important;
+}
+#email {
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+}
+}
