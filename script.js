@@ -1,6 +1,3 @@
-/* =========================================================
-   DYNAMIC VH FIX
-   ========================================================= */
 (function () {
   function setVH() {
     const vh = window.innerHeight * 0.01;
@@ -15,22 +12,13 @@ window.addEventListener("load", () => {
   const content = document.querySelector(".page-content");
   if (!content) return;
 
-  // Forzamos que el navegador calcule el layout real (con la altura completa de #home y los ovales)
   void content.offsetWidth;
 
-  // Quitamos la clase en el siguiente frame → así el navegador ya ha medido todo correctamente
   requestAnimationFrame(() => {
     content.classList.remove("start-hidden");
   });
 });
 
-
-/* =========================================================
-   PAGE FADE OUT — FINALLY FIXED & WORKING
-   ========================================================= */
-/* =========================================================
-   SMOOTH PAGE FADE-OUT — no violence, just elegance
-   ========================================================= */
 document.addEventListener("click", (e) => {
   const link = e.target.closest("nav a");
   if (!link) return;
@@ -42,23 +30,17 @@ document.addEventListener("click", (e) => {
   const content = document.querySelector(".page-content");
   if (!content) return;
 
-  // fade out
   content.classList.add("fade-out");
 
   setTimeout(() => {
     window.location.href = href;
-  }, 1300); // slightly above 1.2s
+  }, 1300); 
 });
 
-
-/* =========================================================
-   PAGE FADE IN — keep your original 1-second delay
-   ========================================================= */
 window.addEventListener("load", () => {
   const content = document.querySelector(".page-content");
   if (!content) return;
 
-  // Force reflow + clean state
   void content.offsetWidth;
   content.classList.remove("fade-out");
 
@@ -68,9 +50,6 @@ setTimeout(() => {
 
 });
 
-/* =========================================================
-   NAV STATE
-   ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   const nav = document.querySelector("nav");
   const lime = nav?.querySelector(".lime");
@@ -117,9 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
   sessionStorage.removeItem("navTarget");
 });
 
-/* =========================================================
-   PROJECTS + SLIDER + INFO
-   ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.getElementById("page-wrapper");
   const projects = Array.from(document.querySelectorAll(".project"));
@@ -129,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const infoContainer = document.querySelector(".info-container");
   let currentProject = null;
 
-  /* ---------- CUSTOM CURSOR ---------- */
   const cursor = document.createElement("div");
   cursor.className = "custom-arrow-cursor";
   cursor.innerHTML = `<img src="right-arrow.png" class="cursor-arrow">`;
@@ -142,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const showCursor = () => cursor.style.opacity = "1";
   const hideCursor = () => cursor.style.opacity = "0";
 
-  /* ---------- OBSERVER FOR PROJECT VIEW (NOW SYNCHRONIZED WITH OVALS) ---------- */
   const projectObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -170,20 +144,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Update info bar visibility
       const anyInView = projects.some(p => p.classList.contains("in-view"));
       infoContainer.classList.toggle("visible", anyInView);
     },
     {
       root: wrapper,
-      rootMargin: "-45% 0px -45% 0px",  // Triggers early — syncs perfectly with oval hide
+      rootMargin: "-45% 0px -45% 0px",  
       threshold: 0
     }
   );
 
   projects.forEach(p => projectObserver.observe(p));
 
-  /* ---------- SLIDER (IMAGES + VIDEOS) ---------- */
   projects.forEach(project => {
     const slider = project.querySelector(".slider");
     if (!slider) return;
@@ -267,7 +239,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlide();
   });
 
-  /* ---------- INFO TOGGLE ---------- */
   let lockedScrollY = 0;
   const isTouch = matchMedia("(pointer: coarse)").matches;
 
@@ -303,7 +274,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ---------- HOME TEXT FADE ---------- */
   const homeText = document.getElementById("home-text");
   if (homeText) {
     const fadeHeight = window.innerHeight * 0.3;
@@ -315,155 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-/* =========================================================
-   OVAL CHAOS — NOW PERFECTLY SYNCED WITH FIRST PROJECT
-   ========================================================= */
-// document.addEventListener("DOMContentLoaded", () => {
-//   const oval = document.querySelector(".oval-container");
-//   const home = document.getElementById("home");
-//   const wrapper = document.getElementById("page-wrapper");
-//   if (!oval || !home || !wrapper) return;
-
-//   const imgs = oval.querySelectorAll("img");
-
-//   imgs.forEach(img => {
-//     img.dataset.base = "translate(-50%, -50%)";
-
-//     const angle = Math.random() * Math.PI * 2;
-//     const force = 180 + Math.random() * 300;
-
-//     img.dataset.x = Math.cos(angle) * force;
-//     img.dataset.y = Math.sin(angle) * force;
-//     img.dataset.speed = 0.5 + Math.random() * 2.4;
-//     img.dataset.scale = Math.random() < 0.3
-//       ? 5 + Math.random() * 10
-//       : 0.2 + Math.random() * 2;
-//   });
-
-//   const tick = () => {
-//     const scrollY = wrapper.scrollTop;
-//     const homeHeight = home.offsetHeight;
-
-//     const triggerHideAt = homeHeight * 0.8;
-//     const shouldHide = scrollY > triggerHideAt;
-
-//     oval.style.opacity = shouldHide ? "0" : "1";
-//     oval.style.pointerEvents = shouldHide ? "none" : "auto";
-
-//     // ✅ CHAOS BEGINS AS SOON AS YOU SCROLL
-//     const progress = Math.max(0, Math.min(1, scrollY / window.innerHeight));
-
-//     if (!shouldHide && progress > 0.001) {
-//       imgs.forEach(img => {
-//         const x = parseFloat(img.dataset.x);
-//         const y = parseFloat(img.dataset.y);
-//         const speed = parseFloat(img.dataset.speed);
-//         const scale = parseFloat(img.dataset.scale);
-
-//         let t = Math.min(progress * speed * 0.6, 1);
-//         const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-//         img.style.transform = `
-//           ${img.dataset.base}
-//           translate(${x * ease}vw, ${y * ease}vh)
-//           scale(${1 + (scale - 1) * ease})
-//         `;
-//       });
-//     } else if (!shouldHide) {
-//       imgs.forEach(img => img.style.transform = img.dataset.base);
-//     }
-
-//     requestAnimationFrame(tick);
-//   };
-
-//   if (wrapper.scrollTop === 0) {
-//     oval.style.opacity = "1";
-//     oval.style.pointerEvents = "auto";
-//     imgs.forEach(img => img.style.transform = img.dataset.base);
-//   }
-
-//   requestAnimationFrame(tick);
-// });
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   const oval = document.querySelector(".oval-container");
-//   const home = document.getElementById("home");
-//   const wrapper = document.getElementById("page-wrapper");
-//   if (!oval || !home || !wrapper) return;
-
-//   const imgs = oval.querySelectorAll("img");
-
-//   imgs.forEach(img => {
-//     img.dataset.base = "translate(-50%, -50%)";
-
-//     const angle = Math.random() * Math.PI * 2;
-//     const force = 180 + Math.random() * 300;
-
-//     img.dataset.x = Math.cos(angle) * force;
-//     img.dataset.y = Math.sin(angle) * force;
-//     img.dataset.speed = 0.5 + Math.random() * 2.4;
-//     img.dataset.scale =
-//       Math.random() < 0.3 ? 5 + Math.random() * 10 : 0.2 + Math.random() * 2;
-//   });
-
-//   const tick = () => {
-//     const scrollY = wrapper.scrollTop;
-//     const homeHeight = home.offsetHeight;
-
-//     // ----------------------------
-//     // ⭐ NEW: SMOOTH 95% FADE LOGIC
-//     // ----------------------------
-//     const startFade = homeHeight * 0.95; // 95%
-//     const endFade = homeHeight * 1.05;   // fully hidden shortly after
-
-//     let opacity = 1;
-
-//     if (scrollY >= startFade) {
-//       opacity = 1 - (scrollY - startFade) / (endFade - startFade);
-//       opacity = Math.max(0, Math.min(1, opacity));
-//     }
-
-//     oval.style.opacity = opacity.toFixed(3);
-//     oval.style.pointerEvents = opacity <= 0 ? "none" : "auto";
-
-//     // --------------------------------
-//     // ORIGINAL CHAOS TRANSFORM HANDLING
-//     // --------------------------------
-//     const progress = Math.max(0, Math.min(1, scrollY / window.innerHeight));
-
-//     if (opacity > 0 && progress > 0.001) {
-//       imgs.forEach(img => {
-//         const x = parseFloat(img.dataset.x);
-//         const y = parseFloat(img.dataset.y);
-//         const speed = parseFloat(img.dataset.speed);
-//         const scale = parseFloat(img.dataset.scale);
-
-//         let t = Math.min(progress * speed * 0.6, 1);
-//         const ease =
-//           t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-//         img.style.transform = `
-//           ${img.dataset.base}
-//           translate(${x * ease}vw, ${y * ease}vh)
-//           scale(${1 + (scale - 1) * ease})
-//         `;
-//       });
-//     } else if (opacity > 0) {
-//       imgs.forEach(img => (img.style.transform = img.dataset.base));
-//     }
-
-//     requestAnimationFrame(tick);
-//   };
-
-//   if (wrapper.scrollTop === 0) {
-//     oval.style.opacity = "1";
-//     oval.style.pointerEvents = "auto";
-//     imgs.forEach(img => (img.style.transform = img.dataset.base));
-//   }
-
-//   requestAnimationFrame(tick);
-// });
 
 document.addEventListener("DOMContentLoaded", () => {
   const oval = document.querySelector(".oval-container");
@@ -477,15 +298,14 @@ document.addEventListener("DOMContentLoaded", () => {
     img.dataset.base = "translate(-50%, -50%)";
 
     const angle = Math.random() * Math.PI * 2;
-    const force = 200 + Math.random() * 300; // larger to ensure offscreen
+    const force = 200 + Math.random() * 300; 
 
     let x = Math.cos(angle) * force;
     let y = Math.sin(angle) * force;
 
-    // ✅ Force downward images away from center toward corners
     if (y > 0) {
-      x = x < 0 ? -force : force; // push fully left or right
-      y = Math.abs(y) + force; // make sure it ends below viewport
+      x = x < 0 ? -force : force; 
+      y = Math.abs(y) + force; 
     }
 
     img.dataset.x = x;
@@ -499,9 +319,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const scrollY = wrapper.scrollTop;
     const homeHeight = home.offsetHeight;
 
-    // ----------------------------
-    // ⭐ Smooth fade out at 95% scroll
-    // ----------------------------
     const startFade = homeHeight * 0.80;
     const endFade = homeHeight * 0.90;
 
@@ -514,9 +331,6 @@ document.addEventListener("DOMContentLoaded", () => {
     oval.style.opacity = opacity.toFixed(3);
     oval.style.pointerEvents = opacity <= 0 ? "none" : "auto";
 
-    // --------------------------------
-    // ⭐ Chaos transform
-    // --------------------------------
     const progress = Math.max(0, Math.min(1, scrollY / window.innerHeight));
 
     if (opacity > 0 && progress > 0.001) {

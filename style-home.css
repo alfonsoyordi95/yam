@@ -1,16 +1,12 @@
 .oval-container {
   position: relative;
   width: 87%;
-  /* 100% - (17% left + 17% right) = 66% */
   height: 64vh;
-  /* fills 80% of viewport height */
-  /* margin: 0 17%;           */
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: visible;
   perspective: 2000px;
-  /* padding-top: 2%; */
   transform-style: preserve-3d;
   scroll-snap-type: none !important;
 }
@@ -21,14 +17,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Stable base transform */
   transition: none !important;
   --count: 16;
   padding-top: 4.5%;
   will-change: transform, opacity, filter;
 }
 
-/* With your exact z-index values + scroll-snap-type */
 .oval-container img:nth-child(1) {
   left: 50%;
   top: 5%;
@@ -176,12 +170,7 @@
   .oval-container.flying img {
     transition: none !important;
   }
-
-  /* .oval-container {
-    width: 145%;
-    height: 50vh;
-    margin-top: 0;
-  } */
+  
   #home-text {
     top: 50%;
     width: 100%;

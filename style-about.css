@@ -16,18 +16,13 @@ hr {
   margin: 0 2% 0.75%;
 }
 
-/* =========================================================
-   ALFONSO YORDI – PERFECT VERTICAL CENTER (desktop + mobile)
-   ========================================================= */
 #alfonso-yordi {
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* vertical center */
   align-items: center;
-  /* horizontal center */
   padding: 12vh 0 12vh;
   box-sizing: border-box;
   text-align: center;
@@ -35,7 +30,6 @@ hr {
 
 .alfonso-container {
   color: #838383;
-  /* max-width: 90%; */
 }
 
 .alfonso-photo {
@@ -43,7 +37,6 @@ hr {
   max-width: 88vw;
   height: auto;
   object-fit: contain;
-  /* margin-bottom: 2.5rem; */
 }
 
 .alfonso-text {
@@ -82,19 +75,14 @@ hr {
 
 .social-item-alfonso img {
   width: 40px;
-  /* or whatever looks right */
   height: auto;
 }
 
-/* Remove all link underlines */
 .social-links-alfonso a {
   text-decoration: none;
   color: inherit;
 }
 
-/* =========================================================
-   SERVICES
-   ========================================================= */
 #services {
   display: flex;
   flex-direction: column;
@@ -135,9 +123,6 @@ hr {
   text-align: left;
 }
 
-/* =========================================================
-   CLIENTS MARQUEE
-   ========================================================= */
 #clients {
   padding: 8vh 0;
   overflow: hidden;
@@ -184,18 +169,13 @@ hr {
   opacity: 1;
 }
 
-/* =========================================================
-   OUR OFFICE – PERFECT VERTICAL CENTER
-   ========================================================= */
 #our-office {
   min-height: 100vh;
   min-height: 98dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* vertical center */
   align-items: center;
-  /* horizontal center */
   padding: 12vh 0 0;
   box-sizing: border-box;
   text-align: center;
@@ -231,11 +211,7 @@ hr {
   font-size: 1rem !important
 }
 
-/* =========================================================
-   MOBILE STYLES – CLEAN & BULLETPROOF
-   ========================================================= */
 @media (max-width: 480px) {
-
   .separate {
     margin: 8% 0 4% 0;
   }
@@ -245,7 +221,6 @@ hr {
     margin: 0 5% 1rem;
   }
 
-  /* Alfonso & Office – tighter but still perfectly centered */
   #alfonso-yordi {
     padding: 0
   }
@@ -280,7 +255,6 @@ hr {
     line-height: 1.5;
   }
 
-  /* Services – 2 columns, no overflow ever */
   .services-grid {
     grid-template-columns: 1fr 1fr;
     width: 100%;
@@ -299,7 +273,6 @@ hr {
     line-height: 1.48;
   }
 
-  /* Clients marquee mobile */
   #clients {
     height: 44vh;
   }
@@ -323,11 +296,6 @@ hr {
     width: 90%;
     max-width: none;
   }
-
-  /* .office-photo {
-    width: 100%;
-    max-width: none;
-  } */
 
   .alfonso-text-mobile {
     display: block;
