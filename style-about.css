@@ -234,7 +234,7 @@ hr {
 /* =========================================================
    MOBILE STYLES – CLEAN & BULLETPROOF
    ========================================================= */
-@media (max-width: 860px) {
+@media (max-width: 480px) {
 
   .separate {
     margin: 8% 0 4% 0;
@@ -312,9 +312,9 @@ hr {
   .marquee-single .track img {
     height: 48px;
   }
-}
 
-@media (max-width: 480px) {
+
+
   header {
     padding-top: 50px;
   }
@@ -324,10 +324,10 @@ hr {
     max-width: none;
   }
 
-  .office-photo {
+  /* .office-photo {
     width: 100%;
     max-width: none;
-  }
+  } */
 
   .alfonso-text-mobile {
     display: block;
