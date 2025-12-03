@@ -50,26 +50,33 @@ setTimeout(() => {
 
 });
 
+// ———————— NEW PERFECT NAV CODE (replace the old one with this) ————————
 document.addEventListener("DOMContentLoaded", () => {
   const nav = document.querySelector("nav");
   const lime = nav?.querySelector(".lime");
-  const links = nav?.querySelectorAll("nav a");
-  if (!nav || !lime || links.length !== 3) return;
+  const links = nav?.querySelectorAll("a");
+  if (!nav || !lime || links.length === 0) return;
 
   const states = ["home", "about", "contact"];
-  const currentIndex =
-    location.pathname.includes("about") ? 1 :
-    location.pathname.includes("contact") ? 2 : 0;
 
-  let targetState = sessionStorage.getItem("navTarget");
-  let currentStateIndex = targetState ? states.indexOf(targetState) : currentIndex;
+  // 1. Detect current page from the class we now set in HTML
+  let currentIndex = states.indexOf(
+    [...nav.classList].find(c => states.includes(c)) || "home"
+  );
 
-  nav.className = "";
-  nav.classList.add("instant", states[currentStateIndex], "show");
+  // 2. Override if coming from internal navigation (sessionStorage)
+  const saved = sessionStorage.getItem("navTarget");
+  if (saved && states.includes(saved)) {
+    currentIndex = states.indexOf(saved);
+    nav.className = saved; // instantly switch to correct class + gradient
+  }
 
-  lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
-  links[currentStateIndex].classList.add("sticky-hover");
+  // 3. Position lime + highlight active link
+  lime.style.transform = `translateX(${currentIndex * 100}%)`;
+  links.forEach(l => l.classList.remove("sticky-hover"));
+  links[currentIndex].classList.add("sticky-hover");
 
+  // 4. Hover behavior
   links.forEach((link, i) => {
     link.addEventListener("mouseenter", () => {
       links.forEach(l => l.classList.remove("sticky-hover"));
@@ -78,23 +85,55 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     link.addEventListener("click", () => {
-      if (i === currentIndex) return;
-      sessionStorage.setItem("navTarget", states[i]);
-      currentStateIndex = i;
-      nav.classList.remove(...states);
-      nav.classList.add(states[i]);
+      if (i !== currentIndex) {
+        sessionStorage.setItem("navTarget", states[i]);
+      }
     });
   });
 
+  // 5. Mouse leave → back to active page
   nav.addEventListener("mouseleave", () => {
     links.forEach(l => l.classList.remove("sticky-hover"));
-    links[currentStateIndex].classList.add("sticky-hover");
-    lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
+    links[currentIndex].classList.add("sticky-hover");
+    lime.style.transform = `translateX(${currentIndex * 100}%)`;
   });
 
-  requestAnimationFrame(() => nav.classList.remove("instant"));
+  // Cleanup
   sessionStorage.removeItem("navTarget");
 });
+// ——————————————————————————————————————————————————————————
+
+//   nav.className = "";
+//   nav.classList.add("instant", states[currentStateIndex], "show");
+
+//   lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
+//   links[currentStateIndex].classList.add("sticky-hover");
+
+//   links.forEach((link, i) => {
+//     link.addEventListener("mouseenter", () => {
+//       links.forEach(l => l.classList.remove("sticky-hover"));
+//       link.classList.add("sticky-hover");
+//       lime.style.transform = `translateX(${i * 100}%)`;
+//     });
+
+//     link.addEventListener("click", () => {
+//       if (i === currentIndex) return;
+//       sessionStorage.setItem("navTarget", states[i]);
+//       currentStateIndex = i;
+//       nav.classList.remove(...states);
+//       nav.classList.add(states[i]);
+//     });
+//   });
+
+//   nav.addEventListener("mouseleave", () => {
+//     links.forEach(l => l.classList.remove("sticky-hover"));
+//     links[currentStateIndex].classList.add("sticky-hover");
+//     lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
+//   });
+
+//   requestAnimationFrame(() => nav.classList.remove("instant"));
+//   sessionStorage.removeItem("navTarget");
+// });
 
 document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.getElementById("page-wrapper");
