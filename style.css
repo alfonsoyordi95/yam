@@ -417,10 +417,10 @@ nav.contact a:nth-child(2):hover~.lime {
   left: 0;
 }
 
-.info-name.hovered .info-text,
+/* .info-name.hovered .info-text,
 .info-name.open .info-text {
   color: #000;
-}
+} */
 
 #info-toggle {
   background: #ffffffa6;
