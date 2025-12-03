@@ -1,6 +1,9 @@
 @font-face {
   font-family: "SuisseIntl";
   src: url("fonts/SuisseIntl-Regular.otf") format("opentype");
+  src: url("fonts/SuisseIntl-Regular.ttf") format("truetype");
+  src: url("fonts/SuisseIntl-Regular.woff") format("woff");
+  src: url("fonts/SuisseIntl-Regular.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
   /* ← esta línea */
@@ -86,7 +89,9 @@ nav {
 }
 
 #home-text {
+  font-family: "SuisseIntl", sans-serif;
   position: fixed;
+  font-weight: 400; /* match Regular */
   top: 53%;
   left: 50%;
   transform: translate(-50%, -50%);
