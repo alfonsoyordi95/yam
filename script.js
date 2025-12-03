@@ -50,33 +50,26 @@ setTimeout(() => {
 
 });
 
-// ———————— NEW PERFECT NAV CODE (replace the old one with this) ————————
 document.addEventListener("DOMContentLoaded", () => {
   const nav = document.querySelector("nav");
   const lime = nav?.querySelector(".lime");
-  const links = nav?.querySelectorAll("a");
-  if (!nav || !lime || links.length === 0) return;
+  const links = nav?.querySelectorAll("nav a");
+  if (!nav || !lime || links.length !== 3) return;
 
   const states = ["home", "about", "contact"];
+  const currentIndex =
+    location.pathname.includes("about") ? 1 :
+    location.pathname.includes("contact") ? 2 : 0;
 
-  // 1. Detect current page from the class we now set in HTML
-  let currentIndex = states.indexOf(
-    [...nav.classList].find(c => states.includes(c)) || "home"
-  );
+  let targetState = sessionStorage.getItem("navTarget");
+  let currentStateIndex = targetState ? states.indexOf(targetState) : currentIndex;
 
-  // 2. Override if coming from internal navigation (sessionStorage)
-  const saved = sessionStorage.getItem("navTarget");
-  if (saved && states.includes(saved)) {
-    currentIndex = states.indexOf(saved);
-    nav.className = saved; // instantly switch to correct class + gradient
-  }
+  nav.className = "";
+  nav.classList.add("instant", states[currentStateIndex], "show");
 
-  // 3. Position lime + highlight active link
-  lime.style.transform = `translateX(${currentIndex * 100}%)`;
-  links.forEach(l => l.classList.remove("sticky-hover"));
-  links[currentIndex].classList.add("sticky-hover");
+  lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
+  links[currentStateIndex].classList.add("sticky-hover");
 
-  // 4. Hover behavior
   links.forEach((link, i) => {
     link.addEventListener("mouseenter", () => {
       links.forEach(l => l.classList.remove("sticky-hover"));
@@ -85,244 +78,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     link.addEventListener("click", () => {
-      if (i !== currentIndex) {
-        sessionStorage.setItem("navTarget", states[i]);
-      }
+      if (i === currentIndex) return;
+      sessionStorage.setItem("navTarget", states[i]);
+      currentStateIndex = i;
+      nav.classList.remove(...states);
+      nav.classList.add(states[i]);
     });
   });
 
-  // 5. Mouse leave → back to active page
   nav.addEventListener("mouseleave", () => {
     links.forEach(l => l.classList.remove("sticky-hover"));
-    links[currentIndex].classList.add("sticky-hover");
-    lime.style.transform = `translateX(${currentIndex * 100}%)`;
+    links[currentStateIndex].classList.add("sticky-hover");
+    lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
   });
 
-  // Cleanup
+  requestAnimationFrame(() => nav.classList.remove("instant"));
   sessionStorage.removeItem("navTarget");
-});
-// ——————————————————————————————————————————————————————————
-
-//   nav.className = "";
-//   nav.classList.add("instant", states[currentStateIndex], "show");
-
-//   lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
-//   links[currentStateIndex].classList.add("sticky-hover");
-
-//   links.forEach((link, i) => {
-//     link.addEventListener("mouseenter", () => {
-//       links.forEach(l => l.classList.remove("sticky-hover"));
-//       link.classList.add("sticky-hover");
-//       lime.style.transform = `translateX(${i * 100}%)`;
-//     });
-
-//     link.addEventListener("click", () => {
-//       if (i === currentIndex) return;
-//       sessionStorage.setItem("navTarget", states[i]);
-//       currentStateIndex = i;
-//       nav.classList.remove(...states);
-//       nav.classList.add(states[i]);
-//     });
-//   });
-
-//   nav.addEventListener("mouseleave", () => {
-//     links.forEach(l => l.classList.remove("sticky-hover"));
-//     links[currentStateIndex].classList.add("sticky-hover");
-//     lime.style.transform = `translateX(${currentStateIndex * 100}%)`;
-//   });
-
-//   requestAnimationFrame(() => nav.classList.remove("instant"));
-//   sessionStorage.removeItem("navTarget");
-// });
-
-document.addEventListener("DOMContentLoaded", () => {
-  const wrapper = document.getElementById("page-wrapper");
-  const projects = Array.from(document.querySelectorAll(".project"));
-  const infoToggle = document.getElementById("info-toggle");
-  const infoName = document.getElementById("info-name");
-  const infoText = infoName?.querySelector(".info-text");
-  const infoContainer = document.querySelector(".info-container");
-  let currentProject = null;
-
-  const cursor = document.createElement("div");
-  cursor.className = "custom-arrow-cursor";
-  cursor.innerHTML = `<img src="right-arrow.png" class="cursor-arrow">`;
-  document.body.appendChild(cursor);
-
-  const updateCursorPos = (e) => {
-    cursor.style.left = e.clientX + "px";
-    cursor.style.top = e.clientY + "px";
-  };
-  const showCursor = () => cursor.style.opacity = "1";
-  const hideCursor = () => cursor.style.opacity = "0";
-
-  const projectObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        const el = entry.target;
-
-        if (entry.isIntersecting) {
-          el.classList.add("in-view");
-          currentProject = el;
-
-          infoContainer.classList.add("visible");
-
-          switch (el.id) {
-            case "project1": infoText.textContent = "Animario"; break;
-            case "project2": infoText.textContent = "At.Par"; break;
-            case "project3": infoText.textContent = "Creaxures"; break;
-            case "project4": infoText.textContent = "Higher"; break;
-            case "project5": infoText.textContent = "Monaileona"; break;
-            case "project6": infoText.textContent = "Musa"; break;
-            case "project7": infoText.textContent = "Smol Studios"; break;
-            case "project8": infoText.textContent = "Split Hazard"; break;
-          }
-        } else {
-          el.classList.remove("in-view");
-          if (currentProject === el) currentProject = null;
-        }
-      });
-
-      const anyInView = projects.some(p => p.classList.contains("in-view"));
-      infoContainer.classList.toggle("visible", anyInView);
-    },
-    {
-      root: wrapper,
-      rootMargin: "-45% 0px -45% 0px",  
-      threshold: 0
-    }
-  );
-
-  projects.forEach(p => projectObserver.observe(p));
-
-  projects.forEach(project => {
-    const slider = project.querySelector(".slider");
-    if (!slider) return;
-
-    const slides = Array.from(slider.querySelectorAll(".slide"));
-    let currentIndex = slides.findIndex(s => s.classList.contains("active"));
-    if (currentIndex === -1) currentIndex = 0;
-
-    const dots = document.createElement("div");
-    dots.className = "carousel-dots";
-    slides.forEach((_, i) => {
-      const dot = document.createElement("span");
-      dot.className = "dot" + (i === currentIndex ? " active" : "");
-      dot.addEventListener("click", (e) => {
-        e.stopPropagation();
-        currentIndex = i;
-        updateSlide();
-      });
-      dots.appendChild(dot);
-    });
-    slider.after(dots);
-
-    function updateSlide() {
-      slides.forEach((s, idx) => {
-        const isActive = idx === currentIndex;
-        s.classList.toggle("active", isActive);
-
-        if (s.tagName === "VIDEO") {
-          if (isActive) {
-            s.currentTime = 0;
-            s.play();
-          } else {
-            s.pause();
-            s.currentTime = 0;
-          }
-        }
-      });
-
-      dots.querySelectorAll(".dot").forEach((d, idx) =>
-        d.classList.toggle("active", idx === currentIndex)
-      );
-    }
-
-    function nextSlide() {
-      currentIndex = (currentIndex + 1) % slides.length;
-      updateSlide();
-    }
-
-    function prevSlide() {
-      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-      updateSlide();
-    }
-
-    project.addEventListener("click", (e) => {
-      if (e.target.closest(".carousel-dots") || project.classList.contains("show-info")) return;
-
-      const rect = slider.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-
-      if (x <= rect.width / 2) prevSlide();
-      else nextSlide();
-    });
-
-    slider.addEventListener("mouseenter", (e) => {
-      if (!project.classList.contains("show-info")) {
-        updateCursorPos(e);
-        showCursor();
-      }
-    });
-    slider.addEventListener("mousemove", (e) => {
-      if (project.classList.contains("show-info")) { hideCursor(); return; }
-      updateCursorPos(e);
-
-      const rect = slider.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      cursor.classList.toggle("left", x <= rect.width / 2);
-      cursor.classList.toggle("right", x > rect.width / 2);
-    });
-    slider.addEventListener("mouseleave", hideCursor);
-
-    updateSlide();
-  });
-
-  let lockedScrollY = 0;
-  const isTouch = matchMedia("(pointer: coarse)").matches;
-
-  if (infoToggle && infoName && infoText) {
-    infoToggle.addEventListener("click", () => {
-      if (!currentProject) return;
-
-      const open = currentProject.classList.toggle("show-info");
-
-      infoToggle.classList.toggle("hide-mode", open);
-      infoName.classList.toggle("open", open);
-      infoContainer.classList.toggle("info-open", open);
-
-      if (open) {
-        lockedScrollY = wrapper.scrollTop;
-        document.body.classList.add("no-scroll");
-        wrapper.classList.add("freeze");
-      } else {
-        document.body.classList.remove("no-scroll");
-        wrapper.classList.remove("freeze");
-        wrapper.scrollTo({ top: lockedScrollY, behavior: "instant" });
-
-        currentProject.classList.add("closing-info");
-        setTimeout(() => currentProject.classList.remove("closing-info"), 620);
-      }
-
-      hideCursor();
-    });
-
-    if (!isTouch) {
-      infoToggle.addEventListener("mouseenter", () => infoName.classList.add("hovered"));
-      infoToggle.addEventListener("mouseleave", () => infoName.classList.remove("hovered"));
-    }
-  }
-
-  const homeText = document.getElementById("home-text");
-  if (homeText) {
-    const fadeHeight = window.innerHeight * 0.3;
-    wrapper.addEventListener("scroll", () => {
-      const y = wrapper.scrollTop;
-      let opacity = 1 - y / fadeHeight;
-      opacity = Math.max(0, Math.min(1, opacity));
-      homeText.style.opacity = opacity;
-    });
-  }
 });
 
 document.addEventListener("DOMContentLoaded", () => {

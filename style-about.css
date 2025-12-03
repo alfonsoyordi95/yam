@@ -150,15 +150,13 @@ hr {
 }
 
 @keyframes scroll-left {
-  /* from {
+  from {
     transform: translateX(0%);
   }
 
   to {
     transform: translateX(-50%);
-  } */
-  from { transform: translateX(0); }
-  to   { transform: translateX(-66.666666%); }   
+  }
 }
 
 .track img {
@@ -287,6 +285,8 @@ hr {
   .marquee-single .track img {
     height: 48px;
   }
+
+
 
   header {
     padding-top: 50px;

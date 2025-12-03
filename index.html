@@ -369,6 +369,7 @@
   </div>
 
   <script src="script.js" defer></script>
+  <script src="script-project.js"></script>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -400,42 +401,7 @@
 
       check();
     });
-
   </script>
-
-  <script>
-  // Instant fix for about.html and contact.html
-  document.addEventListener("DOMContentLoaded", () => {
-    const nav = document.querySelector("nav");
-    if (!nav) return;
-
-    const isAbout   = location.pathname.includes("about");
-    const isContact = location.pathname.includes("contact");
-
-    // Remove any old state
-    nav.classList.remove("home", "about", "contact");
-
-    // Add correct one immediately
-    if (isAbout)   nav.classList.add("about");
-    if (isContact) nav.classList.add("contact");
-    // index.html already has "home" by default or via your main script
-
-    // Also move the lime bar instantly (in case JS position is wrong too)
-    const lime = nav.querySelector(".lime");
-    if (lime) {
-      if (isAbout)   lime.style.transform = "translateX(100%)";
-      if (isContact) lime.style.transform = "translateX(200%)";
-    }
-
-    // Highlight correct link
-    const links = nav.querySelectorAll("a");
-    links[0]?.classList.remove("sticky-hover");
-    links[1]?.classList.remove("sticky-hover");
-    links[2]?.classList.remove("sticky-hover");
-    if (isAbout)   links[1]?.classList.add("sticky-hover");
-    if (isContact) links[2]?.classList.add("sticky-hover");
-  });
-</script>
 
 </body>
 
