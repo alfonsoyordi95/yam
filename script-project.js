@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           infoContainer.classList.add("visible");
 
-        //   THIS IS WHERE YOU ADD NEW PROJECTS!
+        // HERE IS WHERE YOU ADD NEW PROJECTS!!!
 
           switch (el.id) {
             case "project1": infoText.textContent = "Animario"; break;
