@@ -38,6 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
             case "project4": infoText.textContent = "Higher"; break;
             case "project5": infoText.textContent = "Musa"; break;
           }
+
+          // Cuando el proyecto entra en viewport, intentar reproducir su vídeo activo
+          const activeVideo = el.querySelector(".slide.active");
+          if (activeVideo && activeVideo.tagName === "VIDEO") {
+            activeVideo.play().catch(() => {
+              setTimeout(() => activeVideo.play().catch(() => {}), 200);
+            });
+          }
+
         } else {
           el.classList.remove("in-view");
           if (currentProject === el) currentProject = null;
@@ -89,7 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (s.tagName === "VIDEO") {
           if (isActive) {
             s.currentTime = 0;
-            s.play().catch(() => {});
+            s.play().catch(() => {
+              setTimeout(() => s.play().catch(() => {}), 200);
+            });
           } else {
             s.pause();
             s.currentTime = 0;
@@ -193,21 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateSlide();
   });
-
-  // ==================== MOBILE: AUTOPLAY PRIMER ====================
-  // En móvil los navegadores bloquean autoplay hasta que hay interacción del usuario.
-  // En el primer touch reproducimos el vídeo activo de cada proyecto.
-  if (matchMedia("(pointer: coarse)").matches) {
-    document.addEventListener("touchstart", function playFirstVideoOnce() {
-      projects.forEach(project => {
-        const activeSlide = project.querySelector(".slide.active");
-        if (activeSlide && activeSlide.tagName === "VIDEO") {
-          activeSlide.play().catch(() => {});
-        }
-      });
-      document.removeEventListener("touchstart", playFirstVideoOnce);
-    }, { once: true });
-  }
 
   // ==================== INFO ====================
   let lockedScrollY = 0;
