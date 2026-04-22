@@ -16,7 +16,8 @@
   opacity: 0;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -89,6 +90,8 @@ nav {
   transition: transform .8s, opacity .8s, filter .8s;
 }
 
+
+
 .project.in-view {
   transform: scale(1);
   opacity: 1;
@@ -99,7 +102,8 @@ nav {
 #home-text {
   font-family: "SuisseIntl", sans-serif;
   position: fixed;
-  font-weight: 400; /* match Regular */
+  font-weight: 400;
+  /* match Regular */
   top: 53%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -634,4 +638,21 @@ nav.contact a:nth-child(2):hover~.lime {
   #info-toggle:not(.hide-mode) .plus {
     transform: rotate(0deg) scale(1);
   }
+}
+
+/* ==================== MOBILE SWIPE SUPPORT ==================== */
+
+.slider {
+  touch-action: pan-y;
+  /* Default = allow vertical scroll */
+}
+
+@media (pointer: coarse) {
+  .slider {
+    touch-action: pan-y;
+  }
+
+.slide {
+  touch-action: auto;
+}
 }

@@ -414,14 +414,44 @@
   <script src="script.js" defer></script>
   <script src="script-project.js"></script>
 
+  <!-- FIXED SCRIPT: Click oval images → scroll exactly to top of project1 -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const ovalContainer = document.querySelector(".oval-container");
+  const project1 = document.getElementById("project1");
+  const wrapper = document.getElementById("page-wrapper");
+
+  if (!ovalContainer || !project1 || !wrapper) return;
+
+  ovalContainer.addEventListener("click", (e) => {
+    if (e.target.tagName !== "IMG") return;
+
+    // Get the exact top position of project1 relative to the wrapper
+    const targetTop = project1.offsetTop;
+
+    // Instantly jump close, then smooth scroll for nice feel (or pure instant)
+    wrapper.scrollTo({
+      top: targetTop,
+      behavior: "smooth"     // change to "instant" if you want it snappier
+    });
+
+    // Final hard correction after animation (this fixes most overshoot issues)
+    setTimeout(() => {
+      wrapper.scrollTo({
+        top: project1.offsetTop,   // force exact position
+        behavior: "instant"
+      });
+    }, 700); // 700ms works well with smooth behavior
+  });
+});
+</script>
+  
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const wrapper = document.getElementById("page-wrapper");
       const home = document.getElementById("home");
 
       if (!wrapper || !home) return;
-
-      let isScrollingDown = true;
 
       const check = () => {
         const scrollTop = wrapper.scrollTop;
@@ -430,10 +460,13 @@
         const scrollingDown = scrollTop > (wrapper.lastScrollTop || 0);
         wrapper.lastScrollTop = scrollTop;
 
-        if (!scrollingDown && scrollTop < homeHeight * 0.8) {
+        const viewportH = window.innerHeight;
+
+        if (!scrollingDown && scrollTop < homeHeight + viewportH * 0.3) {
+          // Scrolling up and within ~30% of a viewport past home — free the snap
           wrapper.classList.add("free-scroll");
-        }
-        else if (scrollingDown && scrollTop > homeHeight * 0.3) {
+        } else if (scrollingDown && scrollTop > homeHeight * 0.3) {
+          // Scrolling down past home — re-enable snap for projects
           wrapper.classList.remove("free-scroll");
         }
       };
@@ -446,6 +479,16 @@
     });
   </script>
 
+<!-- JS: Oval hover zoom + cursor feedback -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const ovalContainer = document.querySelector(".oval-container");
+  if (!ovalContainer) return;
+
+  // Make it obvious the images are interactive
+  ovalContainer.style.cursor = "pointer";
+});
+</script>
 </body>
 
 </html>
