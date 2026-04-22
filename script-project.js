@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (s.tagName === "VIDEO") {
           if (isActive) {
             s.currentTime = 0;
-            s.play();
+            s.play().catch(() => {});
           } else {
             s.pause();
             s.currentTime = 0;
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     slider.addEventListener("mouseleave", hideCursor);
 
-    // ==================== MOBILE (FIXED) ====================
+    // ==================== MOBILE ====================
     let touchStartX = 0;
     let touchStartY = 0;
     let isHorizontalSwipe = false;
@@ -165,12 +165,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const diffX = currentX - touchStartX;
       const diffY = currentY - touchStartY;
 
-      // Detect horizontal ONLY if very clear
       if (!isHorizontalSwipe) {
         if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY) * 2) {
           isHorizontalSwipe = true;
         } else {
-          return; // allow vertical scroll
+          return;
         }
       }
 
@@ -194,6 +193,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateSlide();
   });
+
+  // ==================== MOBILE: AUTOPLAY PRIMER ====================
+  // En móvil los navegadores bloquean autoplay hasta que hay interacción del usuario.
+  // En el primer touch reproducimos el vídeo activo de cada proyecto.
+  if (matchMedia("(pointer: coarse)").matches) {
+    document.addEventListener("touchstart", function playFirstVideoOnce() {
+      projects.forEach(project => {
+        const activeSlide = project.querySelector(".slide.active");
+        if (activeSlide && activeSlide.tagName === "VIDEO") {
+          activeSlide.play().catch(() => {});
+        }
+      });
+      document.removeEventListener("touchstart", playFirstVideoOnce);
+    }, { once: true });
+  }
 
   // ==================== INFO ====================
   let lockedScrollY = 0;
