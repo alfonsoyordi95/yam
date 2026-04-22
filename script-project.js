@@ -33,13 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           switch (el.id) {
             case "project1": infoText.textContent = "Animario"; break;
-            case "project2": infoText.textContent = "At.Par"; break;
-            case "project3": infoText.textContent = "Creaxures"; break;
+            case "project2": infoText.textContent = "Creaxures"; break;
+            case "project3": infoText.textContent = "Monaileona"; break;
             case "project4": infoText.textContent = "Higher"; break;
-            case "project5": infoText.textContent = "Monaileona"; break;
-            case "project6": infoText.textContent = "Musa"; break;
-            case "project7": infoText.textContent = "Smol Studios"; break;
-            case "project8": infoText.textContent = "Split Hazard"; break;
+            case "project5": infoText.textContent = "Musa"; break;
           }
         } else {
           el.classList.remove("in-view");
